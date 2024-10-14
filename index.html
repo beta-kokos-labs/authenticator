@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hash Current Time</title>
+    <title>Authenticator</title>
     <style>    .loader {
         width: 48px;
         height: 48px;
@@ -22,7 +22,7 @@
         inset: 0px;
         border-radius: 100%;
         border: 10px solid #FF3D00;
-        animation: prixClipFix 2s infinite linear;
+        animation: prixClipFix 30s infinite linear;
     }
     
     @keyframes prixClipFix {
@@ -34,25 +34,67 @@
     }
     .codes{background-color: gray;border-radius: 15px;height: 50px;color: white;font-size: large;justify-content: space-between; width: 50%;}</style>
 </head>
+<script src="https://cdn.jsdelivr.net/npm/peerjs@1.3.2/dist/peerjs.min.js"></script>
 <body>
     <h1>Hash Current Date and Time</h1>
     <button id="hashButton">Generate Hash</button>
     <p id="result"></p>
 
-    <script>
+    <script>let randint = random_number()
+    function connect(){const peer = new Peer(get_date());
+    peer.on('open', (id) => {
+    console.log('My peer ID is: ' + id);
+    alert('Your peer ID is: ' + id);
+});}
+       /* const peer = new Peer();
+let conn;
+
+peer.on('open', (id) => {
+    console.log('My peer ID is: ' + id);
+    alert('Your peer ID is: ' + id);
+});
+
+peer.on('connection', (connection) => {
+    conn = connection;
+    conn.on('data', (data) => {
+        document.getElementById('output').innerText = data;
+    });
+});
+
+function connectPeer() {
+    const peerId = prompt('');
+    conn = peer.connect(peerId);
+    conn.on('open', () => {
+        console.log('Connected to: ' + peerId);
+    });
+    conn.on('data', (data) => {
+        alert('congrats, you just got '+data+'$')
+        document.cookie=document.cookie+data
+    });
+}
+
+function sendData() {
+    const data = document.getElementById('dataInput').value;
+    if (conn && conn.open) {
+        conn.send(data);
+    } else {
+        alert('Not connected to any peer');
+    }
+    }*/
         function random_number(){
             return Math.floor(100+Math.random()*9000)+'-'+ Math.floor(100+Math.random()*9000)
         }
         async function hashData(data) {
             const encoder = new TextEncoder();
-            const dataBuffer = encoder.encode(data);
+            const dataBuffer = encoder.encode(data+randint);
             const hashBuffer = await crypto.subtle.digest('SHA-1', dataBuffer);
             const hashArray = Array.from(new Uint8Array(hashBuffer));
             const hashHex = hashArray.map(b => ('00' + b.toString(16)).slice(-2)).join('');
+            console.log('2')
             return hashHex;
         }
 
-        document.getElementById('hashButton').addEventListener('click', async () => {
+         async function get_date() {console.log('1')
             const now = new Date();
             const hour = now.getHours();
             const minute = now.getMinutes();
@@ -62,7 +104,9 @@
             const dataToHash = `${year}-${date}-${hour}-${minute}`;
             const hash = await hashData(dataToHash);
             ;
-        });document.getElementById('result').innerHTML = `<div class='codes'><span>code: ${random_number()}</spam> <span class="loader"></span></div>`
+        };randint=random_number();connect();document.getElementById('result').innerHTML = `<div class='codes'><span>code: ${randint}</spam> <span class="loader"></span></div>`
+        function change(){setTimeout(()=>{peer.destroy();;randint=random_number();document.getElementById('result').innerHTML = `<div class='codes'><span>code: ${randint}</spam> <span class="loader"></span></div>`;console.log('change');change();connect()},'60000')}
+        change()
     </script>
 </body>
 </html>
