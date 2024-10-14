@@ -4,6 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hash Current Time</title>
+    <style>    .loader {
+        width: 48px;
+        height: 48px;
+        /*border: 10px solid #FFF;*/
+        border-radius: 50%;
+        position: relative;
+        box-sizing: border-box;
+        
+    }
+    
+    .loader::before {
+        content: "";
+        position: absolute;
+        box-sizing: border-box;
+        transform:rotate(45deg);
+        inset: 0px;
+        border-radius: 100%;
+        border: 10px solid #FF3D00;
+        animation: prixClipFix 2s infinite linear;
+    }
+    
+    @keyframes prixClipFix {
+        0%   { clip-path: polygon(50% 50%, 0 0, 0 0, 0 0, 0 0, 0 0); }
+        25%  { clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 0, 100% 0, 100% 0); }
+        50%  { clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 100% 100%, 100% 100%); }
+        75%  { clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 0 100%, 0 100%); }
+        100% { clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 0 100%, 0 0); }
+    }
+    .codes{background-color: gray;border-radius: 15px;height: 50px;color: white;font-size: large;justify-content: space-between; width: 50%;}</style>
 </head>
 <body>
     <h1>Hash Current Date and Time</h1>
@@ -33,34 +62,7 @@
             const dataToHash = `${year}-${date}-${hour}-${minute}`;
             const hash = await hashData(dataToHash);
             ;
-        });document.getElementById('result').textContent = `code: ${random_number()}`
+        });document.getElementById('result').innerHTML = `<div class='codes'><span>code: ${random_number()}</spam> <span class="loader"></span></div>`
     </script>
 </body>
-</html><style>.loader {
-    width: 48px;
-    height: 96px;
-    border:10px solid #FFF;
-    border-radius: 50%;
-    position: relative;
-    transform:rotate(45deg);
-    box-sizing: border-box;
-  }
-  .loader::before {
-    content: "";
-    position: absolute;
-    box-sizing: border-box;
-    inset:-10px;
-    border-radius: 50%;
-    border:10px solid #FF3D00;
-    animation: prixClipFix 25s infinite linear;
-  }
-
-  @keyframes prixClipFix {
-      0%   {clip-path:polygon(50% 50%,0 0,0 0,0 0,0 0,0 0)}
-      25%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 0,100% 0,100% 0)}
-      50%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,100% 100%,100% 100%)}
-      75%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 100%)}
-      100% {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 0)}
-  }
-    </style>
-<span class="loader"></span>
+</html>
