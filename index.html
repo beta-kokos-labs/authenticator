@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hash Current Time</title>
+</head>
+<body>
+    <h1>Hash Current Date and Time</h1>
+    <button id="hashButton">Generate Hash</button>
+    <p id="result"></p>
+
+    <script>
+        function random_number(){
+            return Math.floor(100+Math.random()*9000)+'-'+ Math.floor(100+Math.random()*9000)
+        }
+        async function hashData(data) {
+            const encoder = new TextEncoder();
+            const dataBuffer = encoder.encode(data);
+            const hashBuffer = await crypto.subtle.digest('SHA-1', dataBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => ('00' + b.toString(16)).slice(-2)).join('');
+            return hashHex;
+        }
+
+        document.getElementById('hashButton').addEventListener('click', async () => {
+            const now = new Date();
+            const hour = now.getHours();
+            const minute = now.getMinutes();
+            const year = now.getFullYear();
+            const date = now.getDate();
+            
+            const dataToHash = `${year}-${date}-${hour}-${minute}`;
+            const hash = await hashData(dataToHash);
+            document.getElementById('result').textContent = `Hash: ${hash}`;
+        });alert(random_number())
+    </script>
+</body>
+</html><style>.loader {
+    width: 48px;
+    height: 96px;
+    border:10px solid #FFF;
+    border-radius: 50%;
+    position: relative;
+    transform:rotate(45deg);
+    box-sizing: border-box;
+  }
+  .loader::before {
+    content: "";
+    position: absolute;
+    box-sizing: border-box;
+    inset:-10px;
+    border-radius: 50%;
+    border:10px solid #FF3D00;
+    animation: prixClipFix 25s infinite linear;
+  }
+
+  @keyframes prixClipFix {
+      0%   {clip-path:polygon(50% 50%,0 0,0 0,0 0,0 0,0 0)}
+      25%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 0,100% 0,100% 0)}
+      50%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,100% 100%,100% 100%)}
+      75%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 100%)}
+      100% {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 0)}
+  }
+    </style>
+<span class="loader"></span>
